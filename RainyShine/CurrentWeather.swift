@@ -2,7 +2,7 @@
 //  CurrentWeather.swift
 //  RainyShine
 //
-//  Created by Gabriele on 9/21/16.
+//  Created by Ashley Donohoe on 9/21/16.
 //  Copyright © 2016 Ashley Donohoe. All rights reserved.
 //
 
@@ -48,7 +48,7 @@ class CurrentWeather {
         return _currentTemp
     }
     
-    func downloadWeatherDetails(completed: DownoadComplete) {
+    func downloadWeatherDetails(completed: @escaping DownoadComplete) {
         //Alamofire download
         let currentWeatherURL = URL(string: CURRENT_WEATHER_URL)!
         Alamofire.request(currentWeatherURL).responseJSON { response in
@@ -77,7 +77,7 @@ class CurrentWeather {
                     }
                 }
             }
+            completed()
         }
-        completed()
     }
 }
