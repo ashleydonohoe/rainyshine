@@ -11,6 +11,8 @@ import UIKit
 
 class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let weatherClient = CurrentWeather()
+    
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var currentTempLabel: UILabel!
     @IBOutlet weak var weatherImage: UIImageView!
@@ -24,6 +26,9 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         print(CURRENT_WEATHER_URL)
+        weatherClient.downloadWeatherDetails {
+            
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
