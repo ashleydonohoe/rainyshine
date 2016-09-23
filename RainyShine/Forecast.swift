@@ -47,33 +47,39 @@ class Forecast {
     }
     
     init(weatherDict: Dictionary<String, AnyObject>) {
+        
         if let temp = weatherDict["temp"] as? Dictionary<String, AnyObject> {
             
-            // Low temp
             if let min = temp["min"] as? Double {
-                let kelvinToFahrenheitPreDivision = (min * (9/5) - 459.67)
-                let kelvintoFahrenheit = Double(round(10 * kelvinToFahrenheitPreDivision/10))
-                self._lowTemp = String(kelvintoFahrenheit)
+                
+                let kelvinToFarenheitPreDivision = (min * (9/5) - 459.67)
+                
+                let kelvinToFarenheit = Double(round(10 * kelvinToFarenheitPreDivision/10))
+                
+                self._lowTemp = "\(kelvinToFarenheit)"
             }
             
-            // High temp
             if let max = temp["max"] as? Double {
-                let kelvinToFahrenheitPreDivision = (max * (9/5) - 459.67)
-                let kelvintoFahrenheit = Double(round(10 * kelvinToFahrenheitPreDivision/10))
-                self._highTemp = String(kelvintoFahrenheit)
+                
+                let kelvinToFarenheitPreDivision = (max * (9/5) - 459.67)
+                
+                let kelvinToFarenheit = Double(round(10 * kelvinToFarenheitPreDivision/10))
+                
+                self._highTemp = "\(kelvinToFarenheit)"
+                
             }
             
         }
         
-        // Date
-        
-        if let list = weatherDict["list"] as? [Dictionary<String, AnyObject>] {
-            if let main = list[0]["main"] as? String {
+        if let weather = weatherDict["weather"] as? [Dictionary<String, AnyObject>] {
+            
+            if let main = weather[0]["main"] as? String {
                 self._weatherType = main
             }
         }
         
         if let date = weatherDict["dt"] as? Double {
+            
             let unixConvertedDate = Date(timeIntervalSince1970: date)
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .full
@@ -81,6 +87,7 @@ class Forecast {
             dateFormatter.timeStyle = .none
             self._date = unixConvertedDate.dayOfTheWeek()
         }
+        
     }
 }
 
