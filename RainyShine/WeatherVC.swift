@@ -12,7 +12,7 @@ import Alamofire
 class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let weatherClient = CurrentWeather()
-    var forecast = Forecast()
+    var forecast: Forecast!
     var forecasts = [Forecast]()
     
     @IBOutlet weak var dateLabel: UILabel!
@@ -29,11 +29,14 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         print(CURRENT_WEATHER_URL)
         weatherClient.downloadWeatherDetails {
+            self.downloadForecastData {
+                
+            }
             self.updateMainUI()
         }
     }
     
-    func downloadForecastData(completed: DownoadComplete) {
+    func downloadForecastData(completed: @escaping DownoadComplete) {
         // Download weatherdata for tableview
         let forecastURL = URL(string: FORECAST_URL)!
         Alamofire.request(forecastURL).responseJSON { response in
@@ -43,9 +46,11 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     for obj in list {
                         let forecast = Forecast(weatherDict: obj)
                         self.forecasts.append(forecast)
+                        print(obj)
                     }
                 }
             }
+            completed()
         }
 
     }
