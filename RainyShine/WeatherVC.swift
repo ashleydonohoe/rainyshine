@@ -36,7 +36,6 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         
         tableView.delegate = self
         tableView.dataSource = self
-        print(CURRENT_WEATHER_URL)
         weatherClient.downloadWeatherDetails {
             self.downloadForecastData {
                 self.updateMainUI()
@@ -44,10 +43,17 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        locationAuthStatus()
+    }
+    
     func locationAuthStatus() {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             currentLocation = locationManager.location
-            print(currentLocation)
+            Location.sharedInstance.latitude = currentLocation.coordinate.latitude
+            Location.sharedInstance.longitude = currentLocation.coordinate.longitude
+            print(Location.sharedInstance.latitude, Location.sharedInstance.longitude)
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationAuthStatus()
